@@ -1,0 +1,73 @@
+GET http://localhost:3003/api/blogs
+
+###
+GET http://localhost:3003/api/users
+
+###
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjhmZTBiZTAzNDM5YTZmZDc2MWZkOTgyIiwiaWF0IjoxNzYxNDgwMDYxfQ.kyojlrjf1f12O0NJ3wxO6Mpia9iv9dZg-F-G_My9iRk
+
+{
+  "title": "Things I Don't Know as of 2018",
+  "author": "Dan Abramov",
+  "url": "aaa",
+  "likes": 3,
+  "user": "68fa2424a6ffb89e2ff05300"
+}
+
+
+### 
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "hellas",
+  "name": "Arto Hellas",
+  "password": "123456789"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "mluukkai",
+  "name": "Matti Luukkainen",
+  "password": "yesplease"
+}
+
+###
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "hellas",
+  "password": "123456789"
+}
+
+###
+DELETE http://localhost:3003/api/blogs/68fa2437a6ffb89e2ff05303
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjhmZTBiZTAzNDM5YTZmZDc2MWZkOTgyIiwiaWF0IjoxNzYxNDgwMDYxfQ.kyojlrjf1f12O0NJ3wxO6Mpia9iv9dZg-F-G_My9iRk
+
+###
+PUT http://localhost:3003/api/blogs/69b6a8a2e06fdcf898f6337f
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjlhZDM2MmFlYWM3YWQwMTg5ZWZkMjUxIiwiaWF0IjoxNzczODI3NDY0fQ.hIj_Ik_BbALTIVn7MP_Txb9QtZdy7ZY7gRKRGLhwTw8
+
+{
+  "likes": 20
+}
+
+###
+POST http://localhost:3003/api/testing/reset
+Content-Type: application/json
+
+###
+POST http://localhost:3003/api/comments/69d152c869d1e3a848697410
+Content-Type: application/json
+
+{
+  "content": "tesdddt"
+}
