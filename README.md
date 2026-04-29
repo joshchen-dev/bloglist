@@ -1,2 +1,2 @@
 # bloglist
-for full stack open ci/cd exercise 21
+for full stack open ci/cd exercise 21.
