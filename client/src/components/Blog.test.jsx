@@ -1,11 +1,32 @@
 import { render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 import Blog from './Blog'
-import userEvent from '@testing-library/user-event'
+import { BrowserRouter } from 'react-router-dom'
+import React from 'react'
+
+const testUser = {
+  'token': 'syJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjlhZDM2MmFlYWM3YWQwMTg5ZWZkMjUxIiwiaWF0IjoxNzczOTAzNzA5fQ.tS6d5ztrAJFgCDNrhtDHgR47YSpzG6qgrM-vTTD3o9g',
+  'username': 'hellas',
+  'name': 'Arto Hellas'
+}
+
+vi.mock('react', async () => {
+  const actual = await vi.importActual('react')
+  return {
+    ...actual,
+    useContext: vi.fn((context) => {
+      // Return the test user for UserContext
+      if (context.displayName === 'UserContext') {
+        return { user: testUser }
+      }
+      return {}
+    }),
+  }
+})
 
 describe('<Blog />', () => {
-  let setBlogsMock
-  let blogServiceMock
+  let likeMutationMock
+  let deleteMutationMock
 
   const blog = {
     author: 'foo',
@@ -15,61 +36,31 @@ describe('<Blog />', () => {
     url: 'where to',
     user: {
       id: '123111',
-      name: 'bar',
+      name: 'Arto Hellas',
       uesrname: 'ba'
     }
   }
 
-  const user = {
-    'token': 'syJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjlhZDM2MmFlYWM3YWQwMTg5ZWZkMjUxIiwiaWF0IjoxNzczOTAzNzA5fQ.tS6d5ztrAJFgCDNrhtDHgR47YSpzG6qgrM-vTTD3o9g',
-    'username': 'hellas',
-    'name': 'Arto Hellas'
-  }
-
   beforeEach(() => {
-    setBlogsMock = vi.fn()
-    blogServiceMock = { uploadLike: vi.fn() }
+    likeMutationMock = { mutate: vi.fn() }
+    deleteMutationMock = { mutate: vi.fn() }
 
-    render(<Blog blog={blog} blogs={[blog]} user={user} setBlogs={setBlogsMock} blogService={blogServiceMock} />)
+    render(
+      <BrowserRouter>
+        <Blog blog={blog} likeMutation={likeMutationMock} deleteMutation={deleteMutationMock} />
+      </BrowserRouter>
+    )
   })
 
   test('title and author are visible by default', () => {
-    const element = screen.getByText('this is just a test ' + 'foo')
-    expect(element).toBeVisible()
+    const titleElement = screen.getByText('this is just a test')
+    const authorElement = screen.getByText('foo')
+    expect(titleElement).toBeVisible()
+    expect(authorElement).toBeVisible()
   })
 
-  test('likes are not visible by default', () => {
-    const likes = screen.getByText('likes 3')
-    expect(likes).not.toBeVisible()
-  })
-
-  test('url are not visible by default', () => {
-    const url = screen.getByText('where to')
-    expect(url).not.toBeVisible()
-  })
-
-  test('after clicking \'view\' button, url and likes are displayed', async () => {
-    const user = userEvent.setup()
-    const button = screen.getByText('view')
-    await user.click(button)
-
-    const likes = screen.getByText('likes 3')
-    expect(likes).toBeVisible()
-
-    const url = screen.getByText('where to')
-    expect(url).toBeVisible()
-  })
-
-  test('after clicking \'like\' button twice, the registered handler is called twice', async () => {
-    const user = userEvent.setup()
-
-    const viewButton = screen.getByText('view')
-    await user.click(viewButton)
-
-    const likeButton = screen.getByText('like')
-    await user.click(likeButton)
-    await user.click(likeButton)
-
-    expect(blogServiceMock.uploadLike.mock.calls).toHaveLength(2)
+  test('blog is rendered as a link to the blog detail page', () => {
+    const link = screen.getByRole('link')
+    expect(link).toHaveAttribute('href', '/blogs/123456')
   })
 })

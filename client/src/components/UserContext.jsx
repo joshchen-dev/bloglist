@@ -12,6 +12,7 @@ const userReducer = (state, action) => {
 }
 
 const UserContext = createContext()
+UserContext.displayName = 'UserContext'
 
 export const UserContextProvider = (props) => {
   const [user, userDispatch] = useReducer(userReducer, null)

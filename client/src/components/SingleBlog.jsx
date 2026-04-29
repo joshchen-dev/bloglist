@@ -8,7 +8,7 @@ const SingleBlog = ({ blogs, likeMutation, deleteMutation }) => {
   const { id } = useParams()
   const { user } = useContext(UserContext)
   const navigate = useNavigate()
-  
+
   const blog = blogs.find(b => b.id === id)
 
   // Safety check for undefined blog
@@ -44,9 +44,9 @@ const SingleBlog = ({ blogs, likeMutation, deleteMutation }) => {
           </header>
 
           <div className="flex flex-wrap items-center gap-4 mb-8">
-            <a 
-              href={blog.url} 
-              target="_blank" 
+            <a
+              href={blog.url}
+              target="_blank"
               rel="noreferrer"
               className="text-indigo-600 hover:text-indigo-800 font-medium underline decoration-2 underline-offset-4 transition-colors"
             >
@@ -65,7 +65,7 @@ const SingleBlog = ({ blogs, likeMutation, deleteMutation }) => {
                 <span className="block text-2xl font-bold text-gray-900">{blog.likes}</span>
                 <span className="text-xs uppercase tracking-widest text-gray-400 font-bold">Likes</span>
               </div>
-              <Button 
+              <Button
                 onClick={updateLike}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 rounded-full shadow-md transition-transform active:scale-95"
               >
@@ -75,7 +75,7 @@ const SingleBlog = ({ blogs, likeMutation, deleteMutation }) => {
 
             {/* Actions */}
             {isOwner && (
-              <Button 
+              <Button
                 onClick={deleteBlog}
                 className="bg-red-50 text-red-600 hover:bg-red-100 border-none px-4 py-2 rounded-lg transition-colors"
               >

@@ -3,12 +3,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "install:all": "concurrently \"npm install --prefix client\" \"npm install --prefix server\"",
+    "test:all": "concurrently \"npm run test --prefix client\" \"npm run test --prefix server\"",
+    "lint:all": "concurrently \"npm run lint --prefix client\" \"npm run lint --prefix server\"",
     "dev": "nodemon src/server/main.js -w src/server",
     "start": "NODE_ENV=production node src/server/main.js",
-    "build": "vite build"
-  },
-  "dependencies": {
+    "build": "npm run build --prefix client"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1"
   }
 }

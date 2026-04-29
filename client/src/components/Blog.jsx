@@ -1,6 +1,6 @@
 import { ChevronRightIcon, ExternalLinkIcon } from 'lucide-react'
 
-import { useContext, useState } from 'react'
+// import { useContext, useState } from 'react'
 import UserContext from './UserContext'
 import { Link } from 'react-router-dom'
 import { Button } from './ui/Button'
@@ -13,41 +13,41 @@ import {
   ItemTitle,
 } from '@/components/ui/item'
 
-const Blog = ({ blog, likeMutation, deleteMutation }) => {
-  const [extend, setExtend] = useState(0)
-  const { user } = useContext(UserContext)
-  const buttonLabels = ['view', 'hide']
-  const showWhenExtended = { display: extend === 1 ? '' : 'none' }
-  const showWhenIsOwner = { display: extend && (blog.user.name === user.name) ? '' : 'none' }
+const Blog = ({ blog }) => {
+  // const [extend, setExtend] = useState(0)
+  // const { user } = useContext(UserContext)
+  // const buttonLabels = ['view', 'hide']
+  // const showWhenExtended = { display: extend === 1 ? '' : 'none' }
+  // const showWhenIsOwner = { display: extend && (blog.user.name === user.name) ? '' : 'none' }
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
+  // const blogStyle = {
+  //   paddingTop: 10,
+  //   paddingLeft: 2,
+  //   border: 'solid',
+  //   borderWidth: 1,
+  //   marginBottom: 5,
+  // }
 
-  const updateLike = () => {
-    likeMutation.mutate({
-      id: blog.id,
-      likes: blog.likes + 1,
-      token: user.token
-    })
-  }
+  // const updateLike = () => {
+  //   likeMutation.mutate({
+  //     id: blog.id,
+  //     likes: blog.likes + 1,
+  //     token: user.token
+  //   })
+  // }
 
-  const deleteBlog = () => {
-    const yes = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
+  // const deleteBlog = () => {
+  //   const yes = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
 
-    if (!yes) {
-      return
-    }
+  //   if (!yes) {
+  //     return
+  //   }
 
-    deleteMutation.mutate({
-      id: blog.id,
-      token: user.token
-    })
-  }
+  //   deleteMutation.mutate({
+  //     id: blog.id,
+  //     token: user.token
+  //   })
+  // }
 
   return (
     <div className='blog'>
