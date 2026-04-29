@@ -11,12 +11,17 @@ on:
 jobs:
   lint_and_test:
     runs-on: ubuntu-latest
+    env:
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+      SECRET: ${{ secrets.SECRET }}
+      PORT: ${{ secrets.PORT}}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: "24"
-      - run: npm run install
+      - run: npm install
       - run: npm run install:all
       - run: npm run lint:all
       - run: npm run test:all
@@ -28,6 +33,49 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: "24"
-      - run: npm run install
+      - run: npm install
       - run: npm run install:all
       - run: npm run build
+
+  tag_release:
+    needs: [ lint_and_test, build ]
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' &&
+      !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: "0"
+
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.75.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+
+  success_notification:
+    runs-on: ubuntu-latest
+    needs: [ tag_release ]
+    if: success()
+    steps:
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: "Deployment Details"
+          url: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id
+            }}"
+          description: "test message"
+
+  error_notification:
+    runs-on: ubuntu-latest
+    needs: [ lint_and_test, tag_release, build]
+    if: failure()
+    steps:
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: "failure"
+          title: "Deployment Details"
+          url: "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id
+            }}"
+          description: ${{ github.action_status }}
