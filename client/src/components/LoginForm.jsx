@@ -38,6 +38,7 @@ const LoginForm = ({ username, setUsername, password, setPassword, showNotificat
             type="text"
             value={username}
             onChange={({ target }) => setUsername(target.value)}
+            className="border border-input rounded px-2 py-1 ml-2"
           />
         </label>
       </div>
@@ -45,9 +46,10 @@ const LoginForm = ({ username, setUsername, password, setPassword, showNotificat
         <label>
           password
           <input
-            type="text"
+            type="password"
             value={password}
             onChange={({ target }) => setPassword(target.value)}
+            className="border border-input rounded px-2 py-1 ml-2"
           />
         </label>
       </div>
