@@ -52,6 +52,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [ lint_and_test, build ]
+    if: ${{ success() && github.event_name == 'push' }}
+    steps:
+      - run: curl ${{ secrets.RENDER_DEPLOY_HOOK }}
 
   success_notification:
     runs-on: ubuntu-latest
